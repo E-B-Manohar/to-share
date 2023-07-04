@@ -27,3 +27,51 @@ if __name__ == "__main__":
   relative_coordinates = get_coordinates_relative_to_another_coordinate_system(point_coordinates, origin_coordinates, rotation_matrix)
 
   print("The coordinates of the point relative to the other coordinate system are: {}".format(relative_coordinates))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+import numpy as np
+
+def cross_product(v1, v2):
+  """Calculates the cross product of two vectors.
+
+  Args:
+    v1: A list or tuple of the x-, y-, and z-coordinates of the first vector.
+    v2: A list or tuple of the x-, y-, and z-coordinates of the second vector.
+
+  Returns:
+    A list or tuple of the x-, y-, and z-coordinates of the cross product vector.
+  """
+
+  x = v1[1] * v2[2] - v1[2] * v2[1]
+  y = v1[2] * v2[0] - v1[0] * v2[2]
+  z = v1[0] * v2[1] - v1[1] * v2[0]
+
+  return [x, y, z]
+
+
+if __name__ == "__main__":
+  v1 = [1, 2, 3]
+  v2 = [4, 5, 6]
+
+  cross_product_vector = cross_product(v1, v2)
+
+  print("The cross product vector is: {}".format(cross_product_vector))
+
+
+-----------------------------------------------------------------------------------------------------------------------
