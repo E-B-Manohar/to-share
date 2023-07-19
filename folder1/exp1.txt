@@ -3,6 +3,41 @@
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+import dash
+import dash_vtk_widget
+import pyvista as pv
+
+# Path to the STP file
+stp_file_path = 'path/to/your/file.stp'
+
+# Load the STP file
+mesh = pv.read(stp_file_path)
+
+# Convert the PyVista mesh to VTK format
+vtk_mesh = mesh.to_vtk()
+
+# Create the Dash app
+app = dash.Dash(__name__)
+
+# Define the layout of the app
+app.layout = dash_vtk_widget.View(
+    [
+        dash_vtk_widget.GeometryRepresentation(
+            id="vtk-rep",
+            children=[
+                dash_vtk_widget.Mesh(
+                    id="vtk-mesh",
+                    representation="surface",
+                    children=[dash_vtk_widget.PolyData(id="vtk-polydata", vtkPolyData=vtk_mesh)],
+                ),
+            ],
+        ),
+    ],
+)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+
 --------------------------------------------------------------------------------------------------------------------
 import dash
 import dash_vtk
