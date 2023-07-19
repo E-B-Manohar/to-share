@@ -1,4 +1,31 @@
+--------------------------------------------------------------------------------------------------------------------
+import plotly.graph_objects as go
+import pywavefront as pw
 
+# Read the OBJ file
+obj = pw.WavefrontOBJ("my_model.obj")
+
+# Get the vertex and triangle data
+vertices = obj.vertices
+triangles = obj.faces
+
+# Create a Plotly mesh3d trace
+trace = go.Mesh3d(
+    x=vertices[:, 0],
+    y=vertices[:, 1],
+    z=vertices[:, 2],
+    i=triangles[:, 0],
+    j=triangles[:, 1],
+    k=triangles[:, 2],
+    color="lightblue",
+)
+
+# Create a figure and add the trace
+fig = go.Figure(data=[trace])
+
+# Show the figure
+fig.show()
+--------------------------------------------------------------------------------------------------------------------
 import numpy as np
 
 def get_coordinates_relative_to_another_coordinate_system(point_coordinates, origin_coordinates, rotation_matrix):
