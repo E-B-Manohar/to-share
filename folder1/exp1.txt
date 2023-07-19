@@ -1,4 +1,45 @@
 --------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+import numpy as np
+import trimesh
+import plotly.graph_objects as go
+
+# Path to the STP file
+stp_file_path = 'path/to/your/file.stp'
+
+# Read the STP file
+mesh = trimesh.load(stp_file_path)
+
+# Extract vertices and faces from the mesh
+vertices = mesh.vertices
+faces = mesh.faces
+
+# Create the plotly trace for the 3D mesh
+trace = go.Mesh3d(
+    x=vertices[:, 0],
+    y=vertices[:, 1],
+    z=vertices[:, 2],
+    i=faces[:, 0],
+    j=faces[:, 1],
+    k=faces[:, 2],
+    color='lightpink',
+    showscale=False
+)
+
+# Create the layout and add the trace to the scene
+layout = go.Layout(
+    scene=dict(
+        aspectmode='data'
+    )
+)
+fig = go.Figure(data=[trace], layout=layout)
+
+# Show the figure
+fig.show()
+
+--------------------------------------------------------------------------------------------------------------------
 import plotly.graph_objects as go
 import pywavefront as pw
 
