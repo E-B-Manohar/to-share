@@ -1,6 +1,45 @@
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+import numpy as np
+import open3d as o3d
+import plotly.graph_objects as go
+
+# Path to the STP file
+stp_file_path = 'path/to/your/file.stp'
+
+# Read the STP file
+mesh = o3d.io.read_triangle_mesh(stp_file_path)
+
+# Extract vertices and triangles from the mesh
+vertices = np.array(mesh.vertices)
+triangles = np.array(mesh.triangles)
+
+# Create the plotly trace for the 3D mesh
+trace = go.Mesh3d(
+    x=vertices[:, 0],
+    y=vertices[:, 1],
+    z=vertices[:, 2],
+    i=triangles[:, 0],
+    j=triangles[:, 1],
+    k=triangles[:, 2],
+    color='lightpink',
+    showscale=False
+)
+
+# Create the layout and add the trace to the scene
+layout = go.Layout(
+    scene=dict(
+        aspectmode='data'
+    )
+)
+fig = go.Figure(data=[trace], layout=layout)
+
+# Show the figure
+fig.show()
+
+--------------------------------------------------------------------------------------------------------------------
 
 import numpy as np
 import trimesh
