@@ -2,6 +2,77 @@
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output, State
+
+# Initialize the Dash app
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+# Dummy user credentials for demonstration (replace with your authentication method)
+VALID_USERNAME_PASSWORD_PAIRS = {
+    'username': 'password'
+}
+
+# Define the layout of the login page
+login_layout = html.Div([
+    html.H1("Login Page", style={'textAlign': 'center'}),
+    dcc.Input(id='username-input', type='text', placeholder='Username', style={'margin': '10px'}),
+    dcc.Input(id='password-input', type='password', placeholder='Password', style={'margin': '10px'}),
+    html.Button('Login', id='login-button', n_clicks=0, style={'margin': '10px'}),
+    html.Div(id='login-error', style={'color': 'red', 'textAlign': 'center'})
+])
+
+# Define the layout of the protected page
+protected_layout = html.Div([
+    dcc.Location(id='url', refresh=False),
+    html.H1("Welcome to the Protected Page", style={'textAlign': 'center'}),
+    dbc.Button("Log Off", id='log-off-button', color='danger', n_clicks=0, style={'margin': 'auto', 'display': 'block'}),
+    html.Div(id='log-off-message', style={'textAlign': 'center', 'margin-top': '10px'}),
+])
+
+# Define app layout as the login page initially
+app.layout = login_layout
+
+# Callback to handle user login
+@app.callback(Output('url', 'pathname'),
+              [Input('login-button', 'n_clicks')],
+              [State('username-input', 'value'),
+               State('password-input', 'value')])
+def login(n_clicks, username, password):
+    if n_clicks > 0:
+        if username in VALID_USERNAME_PASSWORD_PAIRS and VALID_USERNAME_PASSWORD_PAIRS[username] == password:
+            # Here, you would typically set a session token or flag to indicate the user is logged in.
+            return "/protected"
+        else:
+            return "/"
+    return "/"
+
+# Callback to handle log-off
+@app.callback(Output('url', 'pathname'),
+              [Input('log-off-button', 'n_clicks')],
+              [State('url', 'pathname')])
+def log_off(n_clicks, current_path):
+    if n_clicks > 0:
+        # Here, you would typically clear the session token or flag to indicate the user is logged out.
+        return "/"
+    return current_path
+
+# Callback to redirect to login page if accessing the protected page without logging in
+@app.callback(Output('url', 'pathname'),
+              [Input('url', 'pathname')])
+def redirect_to_login(pathname):
+    # Here, check the user's authentication status based on the session token or flag.
+    # If not authenticated and accessing a protected page, redirect to the login page.
+    if pathname == "/protected" and not authenticated:
+        return "/"
+    return pathname
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+
 --------------------------------------------------------------------------------------------------------------------
 import dash
 import dash_vtk_widget
