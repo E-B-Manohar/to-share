@@ -4,6 +4,50 @@
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+import plotly.graph_objects as go
+import pywavefront
+
+# Path to the OBJ file
+obj_file_path = 'path/to/your/file.obj'
+
+# Read the OBJ file
+scene = pywavefront.Wavefront(obj_file_path)
+
+# Extract vertices and faces from the scene
+vertices = []
+triangles = []
+
+for name, mesh in scene.meshes.items():
+    for vertex in mesh.vertices:
+        vertices.append((vertex[0], vertex[1], vertex[2]))
+
+    for face in mesh.faces:
+        if len(face) == 3:
+            triangles.append((face[0][0], face[1][0], face[2][0]))
+
+# Create the plotly trace for the 3D mesh
+trace = go.Mesh3d(
+    x=[v[0] for v in vertices],
+    y=[v[1] for v in vertices],
+    z=[v[2] for v in vertices],
+    i=[t[0] for t in triangles],
+    j=[t[1] for t in triangles],
+    k=[t[2] for t in triangles],
+    color='lightpink',
+    showscale=False
+)
+
+# Create the layout and add the trace to the scene
+layout = go.Layout(
+    scene=dict(
+        aspectmode='data'
+    )
+)
+fig = go.Figure(data=[trace], layout=layout)
+
+# Show the figure
+fig.show()
+
 --------------------------------------------------------------------------------------------------------------------
 import dash
 import dash_html_components as html
