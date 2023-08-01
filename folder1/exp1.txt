@@ -3,6 +3,51 @@
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+import plotly.graph_objects as go
+import pywavefront
+import numpy as np
+
+# Path to the OBJ file
+obj_file_path = 'path/to/your/file.obj'
+
+# Read the OBJ file
+scene = pywavefront.Wavefront(obj_file_path)
+
+# Extract vertices and faces from the scene
+vertices = []
+triangles = []
+
+for name, mesh in scene.meshes.items():
+    vertices.extend(mesh.vertices)
+    triangles.extend(mesh.faces)
+
+# Create the plotly trace for the 3D mesh
+vertices = np.array(vertices)
+triangles = np.array(triangles) - 1  # OBJ format uses 1-based indexing, so we subtract 1
+x, y, z = vertices[:, 0], vertices[:, 1], vertices[:, 2]
+
+trace = go.Mesh3d(
+    x=x,
+    y=y,
+    z=z,
+    i=triangles[:, 0],
+    j=triangles[:, 1],
+    k=triangles[:, 2],
+    color='lightpink',
+    showscale=False
+)
+
+# Create the layout and add the trace to the scene
+layout = go.Layout(
+    scene=dict(
+        aspectmode='data'
+    )
+)
+fig = go.Figure(data=[trace], layout=layout)
+
+# Show the figure
+fig.show()
+
 --------------------------------------------------------------------------------------------------------------------
 import plotly.graph_objects as go
 import pywavefront
