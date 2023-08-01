@@ -2,6 +2,49 @@
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+import dash
+import dash_html_components as html
+import dash_core_components as dcc
+from dash.dependencies import Input, Output
+import pyvista as pv
+
+# Create a Dash app
+app = dash.Dash(__name__)
+
+# Path to the OBJ file
+obj_file_path = 'path/to/your/file.obj'
+
+# Load the OBJ file using pyvista
+mesh = pv.read(obj_file_path)
+
+# Create a PyVista plotter
+plotter = pv.Plotter()
+
+# Add the OBJ mesh to the plotter
+plotter.add_mesh(mesh, color='lightpink', show_edges=True)
+
+# Create the layout of the Dash app
+app.layout = html.Div([
+    dcc.Graph(id='3d-visualization')
+])
+
+# Callback to update the 3D visualization
+@app.callback(
+    Output('3d-visualization', 'figure'),
+    [Input('3d-visualization', 'relayoutData')]
+)
+def update_3d_visualization(relayoutData):
+    # Convert the PyVista plotter to a Plotly figure
+    figure = plotter.to_plotly()
+
+    # Adjust layout settings as needed
+    figure['layout']['scene']['camera']['eye'] = dict(x=2.5, y=2.5, z=1.5)
+
+    return figure
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
+
 --------------------------------------------------------------------------------------------------------------------
 import plotly.graph_objects as go
 import pywavefront
