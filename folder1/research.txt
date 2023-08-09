@@ -1,2 +1,25 @@
-Conformal_prediction: https://en.wikipedia.org/wiki/Conformal_prediction
+General ML:
+- https://github.com/ashishpatel26/regressionmetrics/blob/main/regressionmetrics/metrics.py
+- https://machinelearningmastery.com/statistical-hypothesis-tests-in-python-cheat-sheet/
+- https://stackoverflow.com/questions/23199796/detect-and-exclude-outliers-in-a-pandas-dataframe
+- https://nbviewer.org/github/pycaret/pycaret/blob/master/tutorials/Tutorial%20-%20Regression.ipynb
 
+
+Conformal_prediction: 
+- https://en.wikipedia.org/wiki/Conformal_prediction
+
+
+
+Quantum ML: 
+- https://qiskit.org/documentation/tutorials.html
+- https://github.com/quantum-machine-learning/Hands-On-Quantum-Machine-Learning-With-Python-Vol-1
+
+
+
+
+
+
+
+
+Sci-Hub: science for the people science direct papers
+- https://sci-hub.se/
