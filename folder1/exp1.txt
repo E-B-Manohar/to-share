@@ -5,6 +5,57 @@
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
+import tensorflow as tf
+from tensorflow import keras
+import pandas as pd
+
+# Define the PDE and its boundary conditions
+def pde(x, y):
+    return -y * tf.gradients(x, y)[0]
+
+def bc(x):
+    return x ** 3
+
+# Load the CSV data
+data = pd.read_csv('data.csv')
+x_train = data['x'].to_numpy()
+y_train = data['y'].to_numpy()
+
+# Define the neural network architecture
+model = keras.Sequential([
+    keras.layers.Dense(10, activation='relu', input_shape=(2,)),
+    keras.layers.Dense(1)
+])
+
+# Define the loss function and optimizer
+loss_fn = tf.keras.losses.mse
+optimizer = tf.keras.optimizers.Adam()
+
+# Create the PINN
+def pinn_loss(y_pred, y_true):
+    # Compute the PDE loss
+    pde_loss = tf.reduce_mean((y_pred - y_true) * pde(x_train, y_pred))
+
+    # Compute the boundary condition loss
+    bc_loss = tf.reduce_mean((y_pred - bc(x_train))**2)
+
+    return pde_loss + bc_loss
+
+# Train the PINN
+for epoch in range(100):
+    with tf.GradientTape() as tape:
+        y_pred = model(x_train)
+        loss = pinn_loss(y_pred, y_train)
+
+    grads = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(grads, model.trainable_variables))
+
+# Evaluate the PINN
+x_test = tf.lin_space(0, 1, 100)
+y_pred = model(x_test)
+
+print('Predicted values:')
+print(y_pred)
 --------------------------------------------------------------------------------------------------------------------
 import tensorflow as tf
 from tensorflow import keras
